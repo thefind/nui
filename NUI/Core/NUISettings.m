@@ -26,7 +26,7 @@ static NUISettings *instance = nil;
 {
     instance = [self getInstance];
     instance.stylesheetName = name;
-    instance.stylesheetOrientation = currentDeviceOrientationString();
+    instance.stylesheetOrientation = currentInterfaceOrientationString();
     NUIStyleParser *parser = [[NUIStyleParser alloc] init];
     instance.styles = [parser getStylesFromFile:name];
 }
@@ -69,7 +69,7 @@ static NUISettings *instance = nil;
 + (void)reloadStylesheets
 {
     instance = [self getInstance];
-    instance.stylesheetOrientation = currentDeviceOrientationString();
+    instance.stylesheetOrientation = currentInterfaceOrientationString();
     NUIStyleParser *parser = [[NUIStyleParser alloc] init];
     instance.styles = [parser getStylesFromFile:instance.stylesheetName];
     
@@ -236,7 +236,7 @@ static NUISettings *instance = nil;
 + (BOOL)isOrientationChanged
 {
     instance = [self getInstance];
-    return (instance.stylesheetOrientation != currentDeviceOrientationString());
+    return (instance.stylesheetOrientation != currentInterfaceOrientationString());
 }
 
 + (NSString *)stylesheetOrientation
@@ -259,10 +259,10 @@ static NUISettings *instance = nil;
 
 #pragma mark -
 
-NSString *currentDeviceOrientationString()
+NSString *currentInterfaceOrientationString()
 {
-    UIDeviceOrientation deviceOrientation = [[UIDevice currentDevice] orientation];
-    return UIDeviceOrientationIsLandscape(deviceOrientation) ? @"landscape" : @"portrait";
+    UIInterfaceOrientation interfaceOrientation = [[UIApplication sharedApplication] statusBarOrientation];
+    return UIInterfaceOrientationIsLandscape(interfaceOrientation) ? @"landscape" : @"portrait";
 }
 
 @end
