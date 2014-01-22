@@ -22,18 +22,18 @@
     [self initNUI];
     if (![self.nuiClass isEqualToString:kNUIClassNone]) {
         [NUIRenderer renderTableView:self withClass:self.nuiClass];
-        [NUIRenderer addOrientationDidChangeObserver:self];
+        [NUIRenderer addOrientationWillChangeObserver:self];
     }
     self.nuiApplied = YES;
 }
 
-- (void)orientationDidChange:(NSNotification*)notification
+- (void)orientationWillChange:(NSNotification*)notification
 {
     [NUIRenderer performSelector:@selector(sizeDidChangeForTableView:) withObject:self afterDelay:0];
 }
 
 - (void)override_dealloc {
-    [NUIRenderer removeOrientationDidChangeObserver:self];
+    [NUIRenderer removeOrientationWillChangeObserver:self];
     [self override_dealloc];
 }
 

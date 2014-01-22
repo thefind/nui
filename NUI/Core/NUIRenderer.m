@@ -228,13 +228,13 @@ static NUIRenderer *gInstance = nil;
     [NUITableViewRenderer sizeDidChange:tableView];
 }
 
-+ (void)addOrientationDidChangeObserver:(id)observer
++ (void)addOrientationWillChangeObserver:(id)observer
 {
-    [[NSNotificationCenter defaultCenter] addObserver:observer selector:@selector(orientationDidChange:) name:UIApplicationDidChangeStatusBarOrientationNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:observer selector:@selector(orientationWillChange:) name:UIApplicationWillChangeStatusBarOrientationNotification object:nil];
 }
 
-+ (void)removeOrientationDidChangeObserver:(id)observer {
-    [[NSNotificationCenter defaultCenter] removeObserver:observer name:UIApplicationDidChangeStatusBarOrientationNotification object:nil];
++ (void)removeOrientationWillChangeObserver:(id)observer {
+    [[NSNotificationCenter defaultCenter] removeObserver:observer name:UIApplicationWillChangeStatusBarOrientationNotification object:nil];
 }
 
 + (void)rerender
@@ -266,9 +266,9 @@ static NUIRenderer *gInstance = nil;
         instance.rerenderOnOrientationChange = rerender;
         
         if (rerender) {
-            [self addOrientationDidChangeObserver:self];
+            [self addOrientationWillChangeObserver:self];
         } else {
-            [self removeOrientationDidChangeObserver:self];
+            [self removeOrientationWillChangeObserver:self];
         }
     }
 }
@@ -290,12 +290,14 @@ static NUIRenderer *gInstance = nil;
     return gInstance;
 }
 
-+ (void)orientationDidChange:(NSNotification *)notification
++ (void)orientationWillChange:(NSNotification *)notification
 {
-    if ([NUISettings isOrientationChanged]) {
-        [NUISettings reloadStylesheets];
+    UIInterfaceOrientation orientation =  [notification.userInfo[UIApplicationStatusBarOrientationUserInfoKey] integerValue];
+    
+    BOOL didReload = [NUISettings reloadStylesheetsOnOrientationChange:orientation];
+    
+    if (didReload)
         [NUIRenderer rerender];
-    }
 }
 
 + (void)stylesheetFileChanged

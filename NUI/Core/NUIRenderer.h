@@ -100,8 +100,8 @@
 + (void)sizeDidChangeForTableView:(UITableView*)tableView;
 + (void)sizeDidChangeForTableViewCell:(UITableViewCell*)cell;
 
-+ (void)addOrientationDidChangeObserver:(id)observer;
-+ (void)removeOrientationDidChangeObserver:(id)observer;
++ (void)addOrientationWillChangeObserver:(id)observer;
++ (void)removeOrientationWillChangeObserver:(id)observer;
 
 + (void)setRerenderOnOrientationChange:(BOOL)rerender;
 

@@ -12,6 +12,6 @@
 
 @interface UINavigationBar (NUI)
 
-- (void)orientationDidChange:(NSNotification*)notification;
+- (void)orientationWillChange:(NSNotification*)notification;
 
 @end
